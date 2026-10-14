@@ -1,0 +1,5 @@
+/target/
+/captures/
+# Extracted from the cartridge by extract/extract_assets.py; not distributed.
+/assets/
+__pycache__/

@@ -1,0 +1,36 @@
+[package]
+name = "cadash"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+publish = false
+
+# Standalone: copying the template does not require the MDX workspace.
+[workspace]
+
+[features]
+default = []
+dev-mcp = ["dep:rmcp", "dep:tokio", "dep:base64", "dep:image"]
+
+[dependencies]
+bevy = { version = "=0.20.0", default-features = false, features = [
+  "std", "async_executor", "multi_threaded", "bevy_asset", "bevy_log",
+  "bevy_winit", "bevy_core_pipeline", "bevy_sprite_render", "bevy_gilrs", "bevy_state", "png", "x11",
+  "bevy_audio",
+] }
+# Bevy0.20 exposes native GLES on its renderer crate, not the facade features.
+bevy_render = { version = "=0.20.0", default-features = false, features = ["gles"] }
+rmcp = { version = "=3.5.1", optional = true, features = ["transport-io"] }
+tokio = { version = "1", optional = true, features = ["rt-multi-thread", "sync", "time", "io-std"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Decodes the Ogg Vorbis sound files to PCM at load time (see src/game/audio.rs).
+lewton = "0.10"
+base64 = { version = "0.22", optional = true }
+image = { version = "0.25", optional = true, default-features = false, features = ["png"] }
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
